@@ -5,10 +5,10 @@ import "/src/styles/main.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
-interface Props {
+type Props = {
   title?: string;
   description?: string;
-}
+};
 
 const {
   title,
@@ -40,11 +40,26 @@ const pageTitle = title ? `${title} · Felix Bohlin` : "Felix Bohlin";
     </script>
   </head>
   <body>
-    <div class="lava" aria-hidden="true">
-      <div class="blob b1"></div>
-      <div class="blob b2"></div>
-      <div class="blob b3"></div>
+    <div class="retro-bg" aria-hidden="true">
+      <div class="sunburst"></div>
+      <div class="bands"></div>
     </div>
+    <svg class="retro-defs" aria-hidden="true" width="0" height="0">
+      <filter id="squiggle">
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.012"
+          numOctaves="2"
+          seed="7"
+          result="noise"></feTurbulence>
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="noise"
+          scale="140"
+          xChannelSelector="R"
+          yChannelSelector="G"></feDisplacementMap>
+      </filter>
+    </svg>
     <a class="skip-link" href="#main">Skip to content</a>
     <Header />
     <main id="main">
@@ -62,85 +77,86 @@ const pageTitle = title ? `${title} · Felix Bohlin` : "Felix Bohlin";
 </script>
 
 <style>
-  .lava {
+  .retro-bg {
     position: fixed;
     inset: 0;
     z-index: -1;
     overflow: hidden;
-    filter: blur(70px) saturate(1.2);
-    opacity: 0.22;
-
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      inline-size: 45vmax;
-      aspect-ratio: 1;
-    }
-
-    .b1 {
-      background: var(--accent-1);
-      inset-block-start: -12%;
-      inset-inline-end: -8%;
-      animation: drift-1 26s ease-in-out infinite alternate;
-    }
-
-    .b2 {
-      background: var(--accent-2);
-      inset-block-end: -18%;
-      inset-inline-start: -10%;
-      inline-size: 38vmax;
-      animation: drift-2 34s ease-in-out infinite alternate;
-    }
-
-    .b3 {
-      background: var(--accent-3);
-      inset-block-start: 30%;
-      inset-inline-start: 42%;
-      inline-size: 28vmax;
-      animation: drift-3 42s ease-in-out infinite alternate;
-    }
+    opacity: 0.2;
   }
 
-  @keyframes drift-1 {
+  .retro-defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  /* Hard-edged sunburst rays radiating from a top corner - classic 70s.
+     An SVG displacement filter warps the straight rays into squiggles. */
+  .sunburst {
+    position: absolute;
+    inset-block-start: -60vmax;
+    inset-inline-end: -40vmax;
+    inline-size: 140vmax;
+    aspect-ratio: 1;
+    filter: url(#squiggle);
+    background: conic-gradient(
+      from 0deg,
+      var(--accent-2) 0deg 12deg,
+      transparent 12deg 24deg,
+      var(--accent-3) 24deg 36deg,
+      transparent 36deg 48deg,
+      var(--accent-1) 48deg 60deg,
+      transparent 60deg 72deg,
+      var(--accent-2) 72deg 84deg,
+      transparent 84deg 96deg,
+      var(--accent-3) 96deg 108deg,
+      transparent 108deg 120deg,
+      var(--accent-1) 120deg 132deg,
+      transparent 132deg 144deg,
+      var(--accent-2) 144deg 156deg,
+      transparent 156deg 168deg,
+      var(--accent-3) 168deg 180deg,
+      transparent 180deg 360deg
+    );
+    animation: spin calc(120s * var(--motion, 1)) linear infinite;
+  }
+
+  /* Bold hard color bands anchored to the bottom of the viewport. */
+  .bands {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 32vmax;
+    background: linear-gradient(
+      to top,
+      var(--accent-4) 0% 25%,
+      var(--accent-1) 25% 50%,
+      var(--accent-3) 50% 72%,
+      var(--accent-5) 72% 100%
+    );
+    mask-image: linear-gradient(to top, black 40%, transparent 100%);
+  }
+
+  @keyframes spin {
     to {
-      translate: -18vi 22vb;
-      scale: 1.25;
-    }
-  }
-
-  @keyframes drift-2 {
-    to {
-      translate: 24vi -18vb;
-      scale: 0.85;
-    }
-  }
-
-  @keyframes drift-3 {
-    to {
-      translate: -14vi -20vb;
-      scale: 1.35;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .lava .blob {
-      animation: none;
+      rotate: 360deg;
     }
   }
 
   .skip-link {
-    position: absolute;
-    inset-block-start: var(--size-2);
-    inset-inline-start: var(--size-2);
-    z-index: 10;
-    padding: var(--size-2) var(--size-3);
     background: var(--surface-elevated);
     border-radius: var(--radius-2);
+    inset-block-start: var(--size-2);
+    inset-inline-start: var(--size-2);
+    padding: var(--size-2) var(--size-3);
+    position: absolute;
+    z-index: 10;
 
     &:not(:focus) {
+      block-size: 1px;
       clip-path: inset(50%);
       inline-size: 1px;
-      block-size: 1px;
       overflow: hidden;
       white-space: nowrap;
     }

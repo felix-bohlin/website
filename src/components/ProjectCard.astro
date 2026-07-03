@@ -1,14 +1,14 @@
 ---
 import { Card } from "opui-css/astro";
 
-interface Props {
+type Props = {
   title: string;
   description: string;
   slug?: string;
   url?: string;
   image?: string;
   tag?: string;
-}
+};
 
 const { title, description, slug, url, image, tag = "Project" } = Astro.props;
 
@@ -36,7 +36,6 @@ const vt = (part: string) =>
     <h3 style={vt("title")}>
       {href ? <a href={href}>{title}</a> : title}
     </h3>
-    <p style={vt("desc")}>{description}</p>
   </Fragment>
 </Card>
 
