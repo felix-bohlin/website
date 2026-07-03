@@ -1,0 +1,79 @@
+@layer openprops, theme, normalize, components.root, components.extended, utils;
+
+/* Open Props */
+@import "opui-css/open-props";
+
+/* Theme */
+@import "opui-css/core/palette";
+@import "./theme.css";
+
+/* Normalize */
+@import "opui-css/core/normalize";
+
+/* Components */
+@import "opui-css/css/components";
+
+/* Utils */
+@import "opui-css/core/utils";
+
+
+
+
+/* Setup */
+:root {
+	--_gap: var(--size-4, 20px);
+	--_page-gutters: var(--_gap);
+
+	@media (width >=600px) {
+		--_page-gutters: calc(var(--_gap) * 2);
+	}
+
+	/* Content width */
+	--_content-document: 80ch;
+	--_content-sm: 540px;
+	--_content-md: 1140px;
+	--_content-lg: 1500px;
+	--_content-text: 65ch;
+
+	font-family: var(--font-monospace-slab-serif);
+}
+
+
+/* Wrapper for consistent widths and gutters */
+.container {
+	margin: 0 auto;
+	max-inline-size: min(calc(100% - var(--_page-gutters)), var(--_content-md));
+
+	/* Sizes */
+	&.ui-small {
+		max-inline-size: min(calc(100% - var(--_page-gutters)), var(--_content-sm));
+	}
+
+	&.ui-large {
+		max-inline-size: min(calc(100% - var(--_page-gutters)), var(--_content-lg));
+	}
+
+	&.ui-text {
+		max-inline-size: min(calc(100% - var(--_page-gutters)),
+				var(--_content-text));
+	}
+
+	/* Horizontal alignment */
+	&.ui-start {
+		margin-inline: var(--_gap) auto;
+	}
+
+	&.ui-end {
+		margin-inline: auto var(--_gap);
+	}
+}
+
+
+.ui-card {
+	corner-shape: squircle;
+	transition: corner-shape calc(0.2s * var(--motion, 1)) ease-in-out;
+
+	&:hover {
+		corner-shape: round;
+	}
+}
