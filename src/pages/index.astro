@@ -17,9 +17,9 @@ const latestPosts = (await getCollection("blog", ({ data }) => !data.draft))
 <Layout>
   <section class="hero container">
     <h1 class="display-xl">Hej, I'm <span class="sunset-text">Felix</span></h1>
-    <p class="lede">
+    <p class="ui-p ui-large">
       I build for the web. Frontend development, design systems, component
-      libraries, you name it. Modern CSS is my weapon of choice.
+      libraries, you name it.
     </p>
   </section>
 
@@ -66,11 +66,8 @@ const latestPosts = (await getCollection("blog", ({ data }) => !data.draft))
   .hero {
     padding-block: var(--size-9) var(--size-8);
 
-    .lede {
-      max-inline-size: 48ch;
+    .ui-p.ui-large {
       margin-block-start: var(--size-4);
-      font-size: var(--font-size-2);
-      line-height: 1.6;
     }
   }
 

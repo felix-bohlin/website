@@ -14,9 +14,9 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
 >
   <section class="container ui-small">
     <header class="page-head">
-      <p class="eyebrow">Dev blog</p>
-      <h1>Liner <span class="sunset-text">notes</span></h1>
-      <p class="lede">
+      <p class="ui-overline">Very interesting</p>
+      <h1>Dev <span class="sunset-text">blog</span></h1>
+      <p class="ui-p ui-large">
         Notes on frontend development, CSS and whatever else is spinning.
       </p>
     </header>
@@ -41,12 +41,6 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
     h1 {
       font-style: italic;
       color: var(--accent-2);
-    }
-
-    .lede {
-      max-inline-size: 48ch;
-      margin-block-start: var(--size-3);
-      font-size: var(--font-size-2);
     }
   }
 </style>

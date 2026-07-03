@@ -22,9 +22,9 @@ const vt = (part: string) => `view-transition-name: work-${project.id}-${part}`;
   <article class="container ui-small">
     <header class="project-head">
       <hgroup>
-        <p class="eyebrow" style={vt("tag")}>{data.tag}</p>
+        <p class="ui-overline" style={vt("tag")}>{data.tag}</p>
         <h1 style={vt("title")}>{data.title}</h1>
-        <p class="lede" style={vt("desc")}>{data.description}</p>
+        <p class="ui-p ui-large" style={vt("desc")}>{data.description}</p>
       </hgroup>
 
       {
@@ -93,10 +93,9 @@ const vt = (part: string) => `view-transition-name: work-${project.id}-${part}`;
       color: var(--accent-2);
     }
 
-    .lede {
-      font-size: var(--font-size-2);
-      color: var(--text-muted);
+    .ui-p.ui-large {
       margin: 0;
+      color: var(--text-muted);
     }
 
     .actions {

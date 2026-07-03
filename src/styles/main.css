@@ -147,12 +147,21 @@
 	-webkit-text-fill-color: transparent;
 }
 
-/* Eyebrow label, mono + tracked out like liner notes */
-.eyebrow {
+/* Override OPUI's overline so it feels like our mono, tracked-out "liner notes" eyebrow */
+:where(.ui-overline) {
 	font-family: var(--font-body);
 	font-size: var(--font-size-0);
 	font-weight: 600;
-	text-transform: uppercase;
 	letter-spacing: 0.18em;
+	text-transform: uppercase;
 	color: var(--text-muted);
+}
+
+/* Override OPUI's large body paragraph to read as our calm lead-in line */
+:where(.ui-p.ui-large) {
+	max-inline-size: 48ch;
+	margin-block-start: var(--size-3);
+	font-size: var(--font-size-2);
+	line-height: 1.6;
+	text-wrap: pretty;
 }

@@ -14,9 +14,9 @@ const projects = (await getCollection("work")).sort(
 >
   <section class="container">
     <header class="page-head">
-      <p class="eyebrow">Portfolio</p>
+      <p class="ui-overline">Portfolio</p>
       <h1>Things I <span class="sunset-text">made</span></h1>
-      <p class="lede">
+      <p class="ui-p ui-large">
         Libraries, experiments and other things that escaped my editor.
       </p>
     </header>
@@ -45,12 +45,6 @@ const projects = (await getCollection("work")).sort(
     h1 {
       font-style: italic;
       color: var(--accent-2);
-    }
-
-    .lede {
-      max-inline-size: 48ch;
-      margin-block-start: var(--size-3);
-      font-size: var(--font-size-2);
     }
   }
 

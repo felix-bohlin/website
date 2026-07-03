@@ -16,7 +16,7 @@ const formatted = pubDate.toLocaleDateString("en-GB", {
 ---
 
 <article class="post-card" data-tiks="pop">
-  <time datetime={pubDate.toISOString()} class="eyebrow">{formatted}</time>
+  <time datetime={pubDate.toISOString()} class="ui-overline">{formatted}</time>
   <h3><a href={href}>{title}</a></h3>
   <p>{description}</p>
 </article>
