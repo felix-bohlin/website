@@ -1,5 +1,21 @@
 ---
+import "@fontsource-variable/fraunces/full.css";
+import "@fontsource-variable/fraunces/full-italic.css";
 import "/src/styles/main.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Felix Bohlin — frontend developer. Design systems, CSS and the modern web.",
+} = Astro.props;
+
+const pageTitle = title ? `${title} · Felix Bohlin` : "Felix Bohlin";
 ---
 
 <!doctype html>
@@ -10,9 +26,123 @@ import "/src/styles/main.css";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
-    <title>Felix Bohlin</title>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <script is:inline>
+      // Apply stored theme before paint to avoid a flash
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark" || theme === "light") {
+        document.documentElement.classList.add(`ui-${theme}`);
+      }
+    </script>
   </head>
   <body>
-    <slot />
+    <div class="lava" aria-hidden="true">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="blob b3"></div>
+    </div>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
   </body>
 </html>
+
+<script>
+  import { init, bindTiks } from "@rexa-developer/tiks";
+
+  init({ theme: "soft", muted: localStorage.getItem("sound") === "off" });
+  bindTiks();
+</script>
+
+<style>
+  .lava {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    filter: blur(70px) saturate(1.2);
+    opacity: 0.22;
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      inline-size: 45vmax;
+      aspect-ratio: 1;
+    }
+
+    .b1 {
+      background: var(--accent-1);
+      inset-block-start: -12%;
+      inset-inline-end: -8%;
+      animation: drift-1 26s ease-in-out infinite alternate;
+    }
+
+    .b2 {
+      background: var(--accent-2);
+      inset-block-end: -18%;
+      inset-inline-start: -10%;
+      inline-size: 38vmax;
+      animation: drift-2 34s ease-in-out infinite alternate;
+    }
+
+    .b3 {
+      background: var(--accent-3);
+      inset-block-start: 30%;
+      inset-inline-start: 42%;
+      inline-size: 28vmax;
+      animation: drift-3 42s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes drift-1 {
+    to {
+      translate: -18vi 22vb;
+      scale: 1.25;
+    }
+  }
+
+  @keyframes drift-2 {
+    to {
+      translate: 24vi -18vb;
+      scale: 0.85;
+    }
+  }
+
+  @keyframes drift-3 {
+    to {
+      translate: -14vi -20vb;
+      scale: 1.35;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lava .blob {
+      animation: none;
+    }
+  }
+
+  .skip-link {
+    position: absolute;
+    inset-block-start: var(--size-2);
+    inset-inline-start: var(--size-2);
+    z-index: 10;
+    padding: var(--size-2) var(--size-3);
+    background: var(--surface-elevated);
+    border-radius: var(--radius-2);
+
+    &:not(:focus) {
+      clip-path: inset(50%);
+      inline-size: 1px;
+      block-size: 1px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+</style>

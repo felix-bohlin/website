@@ -1,0 +1,55 @@
+---
+import { IconButton } from "opui-css/astro";
+---
+
+<IconButton
+  id="theme-toggle"
+  aria-label="Toggle color scheme"
+  aria-pressed="false"
+>
+  <svg
+    aria-hidden="true"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+  >
+    <circle class="sun" cx="12" cy="12" r="5"></circle>
+    <g class="rays">
+      <line x1="12" y1="2" x2="12" y2="4"></line>
+      <line x1="12" y1="20" x2="12" y2="22"></line>
+      <line x1="4.5" y1="4.5" x2="6" y2="6"></line>
+      <line x1="18" y1="18" x2="19.5" y2="19.5"></line>
+      <line x1="2" y1="12" x2="4" y2="12"></line>
+      <line x1="20" y1="12" x2="22" y2="12"></line>
+      <line x1="4.5" y1="19.5" x2="6" y2="18"></line>
+      <line x1="18" y1="6" x2="19.5" y2="4.5"></line>
+    </g>
+  </svg>
+</IconButton>
+
+<script>
+  import { toggle } from "@rexa-developer/tiks";
+
+  const button = document.getElementById("theme-toggle")!;
+  const root = document.documentElement;
+
+  const isDark = () =>
+    root.classList.contains("ui-dark") ||
+    (!root.classList.contains("ui-light") &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  button.setAttribute("aria-pressed", String(isDark()));
+
+  button.addEventListener("click", () => {
+    const next = !isDark();
+    root.classList.toggle("ui-dark", next);
+    root.classList.toggle("ui-light", !next);
+    localStorage.setItem("theme", next ? "dark" : "light");
+    button.setAttribute("aria-pressed", String(next));
+    toggle(next);
+  });
+</script>

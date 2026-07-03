@@ -1,0 +1,124 @@
+---
+import { getCollection, render } from "astro:content";
+import { Button } from "opui-css/astro";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("work");
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+
+const vt = (part: string) => `view-transition-name: work-${project.id}-${part}`;
+---
+
+<Layout title={data.title} description={data.description}>
+  <article class="container ui-small">
+    <header class="project-head">
+      <hgroup>
+        <p class="eyebrow" style={vt("tag")}>{data.tag}</p>
+        <h1 style={vt("title")}>{data.title}</h1>
+        <p class="lede" style={vt("desc")}>{data.description}</p>
+      </hgroup>
+
+      {
+        (data.url || data.repo) && (
+          <div class="actions">
+            {data.url && (
+              <Button
+                as="a"
+                color="primary"
+                data-tiks="click"
+                href={data.url}
+                target="_blank"
+                variant="filled"
+              >
+                Visit site
+              </Button>
+            )}
+            {data.repo && (
+              <Button
+                as="a"
+                href={data.repo}
+                variant="outlined"
+                data-tiks="click"
+              >
+                Source
+              </Button>
+            )}
+          </div>
+        )
+      }
+
+      {
+        data.image && (
+          <img
+            src={data.image}
+            alt={`${data.title} screenshot`}
+            style={vt("image")}
+          />
+        )
+      }
+    </header>
+
+    <div class="ui-rich-text">
+      <Content />
+    </div>
+
+    <footer class="project-foot">
+      <a href="/work" data-tiks="click">← All work</a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .project-head {
+    display: grid;
+    gap: var(--size-5);
+    padding-block: var(--size-8) var(--size-6);
+
+    hgroup {
+      display: grid;
+      gap: var(--size-3);
+    }
+
+    h1 {
+      font-style: italic;
+      color: var(--accent-2);
+    }
+
+    .lede {
+      font-size: var(--font-size-2);
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: var(--size-3);
+    }
+
+    img {
+      inline-size: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      object-position: top;
+      border-radius: var(--radius-3);
+      border: 1px solid var(--border-color);
+    }
+  }
+
+  .project-foot {
+    margin-block-start: var(--size-7);
+
+    a {
+      color: var(--accent-1);
+    }
+  }
+</style>

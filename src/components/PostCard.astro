@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  href: string;
+}
+
+const { title, description, pubDate, href } = Astro.props;
+
+const formatted = pubDate.toLocaleDateString("en-GB", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<article class="post-card" data-tiks="pop">
+  <time datetime={pubDate.toISOString()} class="eyebrow">{formatted}</time>
+  <h3><a href={href}>{title}</a></h3>
+  <p>{description}</p>
+</article>
+
+<style>
+  .post-card {
+    position: relative;
+    display: grid;
+    gap: var(--size-1);
+    padding-block: var(--size-4);
+    border-block-end: 1px solid var(--border-color);
+
+    h3 a {
+      color: var(--text-primary);
+      text-decoration: none;
+
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+      }
+    }
+
+    &:hover h3 a {
+      color: var(--accent-1);
+    }
+
+    p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+  }
+</style>

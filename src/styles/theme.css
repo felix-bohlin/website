@@ -15,8 +15,10 @@
 	:where(html) {
 		color-scheme: var(--color-scheme, light dark);
 
-		/* 2. Palette source */
-		--palette-source: oklch(.58 calc(.21 * .5) var(--hue-green));
+		/* 2. Palette source
+		   Light: warm burnt orange → cream tints, brown shades.
+		   Dark: earthy brown → tan tints, deep chocolate shades. */
+		--palette-source: light-dark(oklch(.62 .13 55), oklch(.52 .06 62));
 		--palette-hue-rotate-by: 0;
 
 		/* 3. Named colors (no severity meaning) - use when you literally want a green/red/etc. dot */
@@ -25,6 +27,18 @@
 		--orange: oklch(from var(--color-7) l 0.2 75);
 		--red: oklch(from var(--color-9) l 0.2 25);
 
+		/* 3b. 70s album-cover accents */
+		--accent-1: light-dark(oklch(.62 .15 45), oklch(.68 .10 245));
+		/* burnt orange | denim blue */
+		--accent-2: light-dark(oklch(.55 .19 30), oklch(.75 .07 70));
+		/* tomato red | tan */
+		--accent-3: light-dark(oklch(.75 .13 80), oklch(.55 .12 250));
+		/* mustard gold | steel blue */
+		--accent-4: light-dark(oklch(.45 .07 55), oklch(.42 .05 55));
+		/* coffee brown | dark brown */
+		--accent-5: light-dark(oklch(.94 .03 85), oklch(.88 .04 78));
+		/* cream | sand */
+
 		/* 4. Intent tokens */
 		--success: var(--green);
 		--info: var(--blue);
@@ -32,11 +46,11 @@
 		--critical: var(--red);
 		--neutral: var(--color-9);
 
-		/* 5. Primary */
-		--primary: var(--color-8);
+		/* 5. Primary - burnt orange in light, denim blue in dark */
+		--primary: var(--accent-1);
 		--primary-light: oklch(from var(--primary) calc(l * 1.25) c h);
 		--primary-dark: oklch(from var(--primary) calc(l * 0.75) c h);
-		--primary-contrast: var(--color-1);
+		--primary-contrast: var(--accent-5);
 
 		/* 6. Text */
 		--text-primary: light-dark(var(--color-15), var(--color-1));
@@ -62,6 +76,8 @@
 		--focus-ring-style: solid;
 
 		/* 10. Typography */
+		--font-display: "Fraunces Variable", "Fraunces", Georgia, serif;
+		--font-body: ui-monospace, "Monaco", "SF Mono", "Cascadia Code", "Source Code Pro", Menlo, monospace;
 		--font-size-h1: var(--font-size-fluid-3);
 		--font-size-h2: var(--font-size-fluid-2);
 		--font-size-h3: var(--font-size-fluid-1);

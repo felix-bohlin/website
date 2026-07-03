@@ -1,0 +1,96 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formatted = post.data.pubDate.toLocaleDateString("en-GB", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<Layout title={post.data.title} description={post.data.description}>
+  <article class="container ui-text rich-text">
+    <header class="post-head">
+      <time datetime={post.data.pubDate.toISOString()} class="eyebrow">
+        {formatted}
+      </time>
+      <h1>{post.data.title}</h1>
+      <p class="lede">{post.data.description}</p>
+      {
+        post.data.tags.length > 0 && (
+          <ul class="tags" role="list">
+            {post.data.tags.map((tag) => (
+              <li>{tag}</li>
+            ))}
+          </ul>
+        )
+      }
+    </header>
+
+    <div class="ui-rich-text">
+      <Content />
+    </div>
+
+    <footer class="post-foot">
+      <a href="/blog" data-tiks="click">← All posts</a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .post-head {
+    padding-block: var(--size-8) var(--size-6);
+    display: grid;
+    gap: var(--size-3);
+
+    h1 {
+      font-style: italic;
+      color: var(--accent-2);
+    }
+
+    .lede {
+      font-size: var(--font-size-2);
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .tags {
+      display: flex;
+      gap: var(--size-2);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        font-size: var(--font-size-0);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        padding: var(--size-1) var(--size-2);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-round);
+        color: var(--accent-1);
+      }
+    }
+  }
+
+  .post-foot {
+    margin-block-start: var(--size-7);
+
+    a {
+      color: var(--accent-1);
+    }
+  }
+</style>

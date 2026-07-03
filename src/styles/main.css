@@ -20,6 +20,10 @@
 
 
 /* Setup */
+@view-transition {
+	navigation: auto;
+}
+
 :root {
 	--_gap: var(--size-4, 20px);
 	--_page-gutters: var(--_gap);
@@ -35,7 +39,25 @@
 	--_content-lg: 1500px;
 	--_content-text: 65ch;
 
-	font-family: var(--font-monospace-slab-serif);
+	font-family: var(--font-body);
+	interpolate-size: allow-keywords;
+	line-height: var(--font-lineheight-4);
+}
+
+/* 70s display headings — Fraunces pushed soft, heavy and a little wonky */
+:where(h1, h2, h3) {
+	font-family: var(--font-display);
+	font-weight: 640;
+	font-variation-settings: "SOFT" 100, "WONK" 1;
+	font-optical-sizing: auto;
+	letter-spacing: -0.02em;
+	text-wrap: balance;
+}
+
+:where(h4, h5, h6) {
+	font-family: var(--font-display);
+	font-weight: 560;
+	font-variation-settings: "SOFT" 60, "WONK" 0;
 }
 
 
@@ -71,9 +93,66 @@
 
 .ui-card {
 	corner-shape: squircle;
-	transition: corner-shape calc(0.2s * var(--motion, 1)) ease-in-out;
+	transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
 
 	&:hover {
-		corner-shape: round;
+		box-shadow: var(--shadow-5);
 	}
+}
+
+
+/* ---- 70s decorative utilities ---- */
+
+/* Horizontal rainbow band, like the stripe across a record sleeve */
+.stripes {
+	--_h: var(--size-2, 8px);
+	block-size: calc(var(--_h) * 5);
+	background: linear-gradient(to bottom,
+			var(--accent-2) 0 20%,
+			var(--accent-1) 0 40%,
+			var(--accent-3) 0 60%,
+			var(--accent-4) 0 80%,
+			var(--accent-5) 0 100%);
+}
+
+/* Big flowing display text, for hero headlines */
+.display-xl {
+	font-family: var(--font-display);
+	font-size: var(--font-size-fluid-3);
+	font-size: clamp(3rem, 1rem + 9vi, 7.5rem);
+	font-weight: 700;
+	font-variation-settings: "SOFT" 100, "WONK" 1;
+	font-style: italic;
+	line-height: 0.95;
+	letter-spacing: -0.03em;
+	padding-inline-end: 0.08em;
+	overflow: visible;
+	color: var(--accent-2);
+	text-wrap: balance;
+}
+
+/* Warm text gradient for accent words */
+.sunset-text {
+	/* Inline-block + tiny end padding prevents italic glyph overhang clipping */
+	display: inline-block;
+	padding-inline-end: 0.08em;
+	margin-inline-end: -0.08em;
+	background: linear-gradient(to bottom,
+			var(--accent-3),
+			var(--accent-1) 55%,
+			var(--accent-2));
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	-webkit-text-fill-color: transparent;
+}
+
+/* Eyebrow label, mono + tracked out like liner notes */
+.eyebrow {
+	font-family: var(--font-body);
+	font-size: var(--font-size-0);
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--text-muted);
 }

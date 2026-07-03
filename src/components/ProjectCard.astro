@@ -1,0 +1,71 @@
+---
+import { Card } from "opui-css/astro";
+
+interface Props {
+  title: string;
+  description: string;
+  slug?: string;
+  url?: string;
+  image?: string;
+  tag?: string;
+}
+
+const { title, description, slug, url, image, tag = "Project" } = Astro.props;
+
+// Prefer the internal landing page when the entry has one
+const href = slug ? `/work/${slug}` : url;
+
+// Shared element names for cross-page view transitions
+const vt = (part: string) =>
+  slug ? `view-transition-name: work-${slug}-${part}` : undefined;
+---
+
+<Card variant="outlined" class="project-card" data-tiks="pop">
+  {
+    image && (
+      <img
+        src={image}
+        alt={`${title} screenshot`}
+        loading="lazy"
+        style={vt("image")}
+      />
+    )
+  }
+  <Fragment slot="header">
+    <p class="eyebrow" style={vt("tag")}>{tag}</p>
+    <h3 style={vt("title")}>
+      {href ? <a href={href}>{title}</a> : title}
+    </h3>
+    <p style={vt("desc")}>{description}</p>
+  </Fragment>
+</Card>
+
+<style>
+  .project-card {
+    position: relative;
+
+    h3 a {
+      color: var(--text-primary);
+      text-decoration: none;
+
+      /* Stretch the link across the whole card */
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+      }
+    }
+
+    &:hover h3 a {
+      color: var(--accent-1);
+    }
+
+    img {
+      inline-size: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      object-position: top;
+      border-radius: var(--radius-2);
+    }
+  }
+</style>

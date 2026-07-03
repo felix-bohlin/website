@@ -1,0 +1,66 @@
+---
+import { IconButton } from "opui-css/astro";
+---
+
+<IconButton id="sound-toggle" aria-label="Toggle UI sounds" aria-pressed="true">
+  <svg
+    aria-hidden="true"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path
+      d="M11 5 6.5 8.5H3.5a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h3L11 19z"
+      fill="currentColor"
+      stroke="none"></path>
+    <g class="waves">
+      <path d="M15 9.5a3.5 3.5 0 0 1 0 5"></path>
+      <path d="M17.5 7a7 7 0 0 1 0 10"></path>
+    </g>
+    <line class="strike" x1="15" y1="9" x2="21" y2="15"></line>
+    <line class="strike" x1="21" y1="9" x2="15" y2="15"></line>
+  </svg>
+</IconButton>
+
+<script>
+  import { mute, unmute, pop } from "@rexa-developer/tiks";
+
+  const button = document.getElementById("sound-toggle")!;
+
+  const isOn = () => localStorage.getItem("sound") !== "off";
+
+  const apply = (on: boolean) => {
+    button.setAttribute("aria-pressed", String(on));
+    if (on) {
+      unmute();
+    } else {
+      mute();
+    }
+  };
+
+  apply(isOn());
+
+  button.addEventListener("click", () => {
+    const next = !isOn();
+    localStorage.setItem("sound", next ? "on" : "off");
+    apply(next);
+    // Audible confirmation when switching back on
+    if (next) pop();
+  });
+</script>
+
+<style>
+  /* Show waves when on, strike when muted */
+  #sound-toggle[aria-pressed="true"] .strike {
+    display: none;
+  }
+
+  #sound-toggle[aria-pressed="false"] .waves {
+    display: none;
+  }
+</style>

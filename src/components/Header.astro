@@ -1,0 +1,112 @@
+---
+import SoundToggle from "./SoundToggle.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+
+const path = Astro.url.pathname;
+const links = [
+  { href: "/work", label: "Work" },
+  { href: "/blog", label: "Blog" },
+];
+
+const isCurrent = (href: string) =>
+  href === "/" ? path === "/" : path.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="container">
+    <a href="/" class="wordmark" data-tiks="click"
+      ><abbr title="Felix Bohlin">FB</abbr></a
+    >
+
+    <nav aria-label="Main">
+      <ul>
+        {
+          links.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                aria-current={isCurrent(href) ? "page" : undefined}
+                data-tiks="click"
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="toggles">
+      <SoundToggle />
+      <ThemeToggle />
+    </div>
+  </div>
+  <div class="stripes" aria-hidden="true"></div>
+</header>
+
+<style>
+  .site-header {
+    /* Keep the header stable during cross-page view transitions */
+    view-transition-name: site-header;
+  }
+
+  .site-header .container {
+    display: flex;
+    align-items: center;
+    gap: var(--size-5);
+    padding-block: var(--size-3);
+  }
+
+  .toggles {
+    display: flex;
+    align-items: center;
+    gap: var(--size-2);
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 640;
+    font-style: italic;
+    font-variation-settings:
+      "SOFT" 100,
+      "WONK" 1;
+    font-size: var(--font-size-3);
+    color: var(--accent-2);
+    text-decoration: none;
+    margin-inline-end: auto;
+
+    abbr {
+      text-decoration: none;
+    }
+  }
+
+  nav ul {
+    display: flex;
+    gap: var(--size-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    font-size: var(--font-size-05);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    color: var(--text-primary);
+
+    &:hover {
+      color: var(--accent-1);
+    }
+
+    &[aria-current="page"] {
+      color: var(--accent-1);
+      border-block-end: 3px solid var(--accent-2);
+    }
+  }
+
+  .stripes {
+    --_h: 3px;
+  }
+</style>

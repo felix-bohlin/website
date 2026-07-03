@@ -1,0 +1,58 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="stripes" aria-hidden="true"></div>
+  <div class="container">
+    <p class="eyebrow">Felix Bohlin · frontend developer</p>
+    <ul>
+      <li>
+        <a href="https://github.com/argyleink/open-props-ui" data-tiks="click"
+          >GitHub</a
+        >
+      </li>
+      <li>
+        <a href="https://open-props-ui.netlify.app" data-tiks="click"
+          >Open Props UI</a
+        >
+      </li>
+    </ul>
+    <p class="colophon">
+      &copy; {year} &middot; Built with Astro, Open Props UI.
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-block-start: var(--size-10);
+
+    .container {
+      display: grid;
+      gap: var(--size-3);
+      padding-block: var(--size-6);
+    }
+
+    ul {
+      display: flex;
+      gap: var(--size-4);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: var(--accent-1);
+    }
+
+    .colophon {
+      font-size: var(--font-size-0);
+      color: var(--text-muted);
+    }
+  }
+
+  .stripes {
+    --_h: 3px;
+  }
+</style>

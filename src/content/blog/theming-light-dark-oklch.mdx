@@ -1,0 +1,31 @@
+---
+title: Theming with light-dark() and OKLCH
+description: How one palette source and relative color syntax can drive an entire two-mood theme.
+pubDate: 2026-07-02
+tags: [css, theming, open-props]
+---
+
+Modern CSS gives us a shockingly small surface area for full theming. This site
+runs two completely different moods — sunset and midnight — from a handful of
+custom properties.
+
+## One source, sixteen colors
+
+Open Props UI generates a full 16-step palette from a single
+`--palette-source`. Swap the source with `light-dark()` and the whole ramp
+re-tints:
+
+```css
+--palette-source: light-dark(
+  oklch(0.62 0.13 55),
+  /* burnt orange → cream tints */ oklch(0.52 0.06 62)
+    /* warm brown → tan tints */
+);
+```
+
+## Why OKLCH
+
+Perceptual uniformity means the cream in light mode and the tan in dark mode
+sit at predictable lightness steps. No more hand-tuning every shade.
+
+That's the whole trick. The rest is just taste.

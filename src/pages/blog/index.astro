@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostCard from "../../components/PostCard.astro";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<Layout
+  title="Blog"
+  description="Notes on frontend development, CSS and design systems by Felix Bohlin."
+>
+  <section class="container ui-small">
+    <header class="page-head">
+      <p class="eyebrow">Dev blog</p>
+      <h1>Liner <span class="sunset-text">notes</span></h1>
+      <p class="lede">
+        Notes on frontend development, CSS and whatever else is spinning.
+      </p>
+    </header>
+
+    {
+      posts.map((post) => (
+        <PostCard
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          href={`/blog/${post.id}`}
+        />
+      ))
+    }
+  </section>
+</Layout>
+
+<style>
+  .page-head {
+    padding-block: var(--size-8) var(--size-6);
+
+    h1 {
+      font-style: italic;
+      color: var(--accent-2);
+    }
+
+    .lede {
+      max-inline-size: 48ch;
+      margin-block-start: var(--size-3);
+      font-size: var(--font-size-2);
+    }
+  }
+</style>

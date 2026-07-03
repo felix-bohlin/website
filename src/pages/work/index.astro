@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+
+const projects = (await getCollection("work")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<Layout
+  title="Work"
+  description="Projects, libraries and experiments by Felix Bohlin."
+>
+  <section class="container">
+    <header class="page-head">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Things I <span class="sunset-text">made</span></h1>
+      <p class="lede">
+        Libraries, experiments and other things that escaped my editor.
+      </p>
+    </header>
+
+    <div class="work-grid">
+      {
+        projects.map(({ id, data }) => (
+          <ProjectCard
+            title={data.title}
+            description={data.description}
+            slug={id}
+            url={data.url}
+            image={data.image}
+            tag={data.tag}
+          />
+        ))
+      }
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-head {
+    padding-block: var(--size-8) var(--size-6);
+
+    h1 {
+      font-style: italic;
+      color: var(--accent-2);
+    }
+
+    .lede {
+      max-inline-size: 48ch;
+      margin-block-start: var(--size-3);
+      font-size: var(--font-size-2);
+    }
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+    gap: var(--_gap);
+  }
+</style>
